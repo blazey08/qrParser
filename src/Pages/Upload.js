@@ -1,10 +1,11 @@
 import axios from "axios"
 import React, { useState } from "react";
+import { Button, Input, Typography } from "@mui/material";
 
 export default function Upload() {
 
     const [file, setFile] = useState()
-    function handleChange(event){
+    function handleChange(event) {
         setFile(event.target.files[0])
     }
 
@@ -27,21 +28,18 @@ export default function Upload() {
         axios.post('/upload', data, config).then((response) => {
             console.log(response.data);
         });
+    }
 
-    }
-    {
-        return (
-            <div className="App">
-                <title>QR Parser</title>
-                <form method="POST" onSubmit={handleSubmit} id="uploadform">
-                    <h1>Upload QR Code</h1>
-                    <div>
-                        <input id="imguploader" name="image" type="file" onChange={handleChange}/>
-                    </div>
-                    <button className="button" id="uploadbtn" type="submit">Upload</button>
-                </form>
-            </div>
-        )
-    }
+    return (
+        <div className="App">
+            <title>QR Parser</title>
+            <Typography variant="h4" margin={5}>Upload QR Code</Typography>
+            <form method="POST" onSubmit={handleSubmit} id="uploadform">
+                <Input id="imguploader" name="image" type="file" disableUnderline={true}  onChange={handleChange} />
+                <Button className="button" id="uploadbtn" type="submit">Upload</Button>
+            </form>
+        </div>
+    )
+
 }
 

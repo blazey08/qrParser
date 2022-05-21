@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import Upload from './Pages/Upload';
-import Home from './Pages/Home';
+import Navbar from './components/navbar';
+import Main from './Pages/Main';
 import Search from './Pages/Search';
+import Upload from './Pages/Upload';
 import Delete from './Pages/Delete';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import { BrowserRouter, Link, Routes, Route } from 'react-router-dom';
+import Login from './Pages/Login';
 
 function App() {
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <title>QR Parsing Service</title>
-        <BrowserRouter>
-          <div>
-            <Link className="App-link" to="/">Home</Link>
-            <Link className="App-link" to="/upload">Upload</Link>
-            <Link className="App-link" to="/search">Search</Link>
-            <Link className="App-link" to="/delete">Delete</Link>
-          </div>
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route path="/upload" element={<Upload />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/delete" element={<Delete />} />
-          </Routes>
-        </BrowserRouter>
-      </header>
-    </div>
-  );
+  <div className='App'>
+       <Navbar />
+    <Routes>
+      <Route path="/" element={<Search />} />
+      <Route path="login" element={<Login />} />
+      <Route path="upload" element={<Upload />} />
+      <Route path="delete" element={<Delete />} />
+    </Routes>
+   
+  </div>)
 }
 
 export default App;

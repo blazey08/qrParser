@@ -1,14 +1,25 @@
 import os
-from flask import Flask, request
+from flask import Flask, request, redirect
 from decoder import processQR
 from database.database import insert_user, delete_user, get_user, get_user_by_id
 
 app = Flask(__name__)
 UPLOAD_FOLDER = os.path.join(os.path.abspath('.'), 'qr')
 
-@app.route('/')
-def main_page():
-    return {"Hello": 500}
+@app.route('/login', methods=["POST"])
+def login_page():
+    username = request.values.get("username")
+    password = request.values.get("password")
+
+    if username == "admin"  or username == "user":
+        print("login success")
+        return {"status":200, "token":"test"}
+
+    else:
+        print("login fail")
+        return {"status":404}
+
+    
 
 @app.route('/upload', methods = ["POST"])
 def add_user():
