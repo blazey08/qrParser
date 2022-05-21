@@ -6,6 +6,7 @@ from tkinter import N
 parent = os.getcwd()
 dbPath = os.path.join(parent, "database.db")
 
+# Path for testing of the database functions
 # dbPath = os.path.join(os.path.dirname(os.getcwd()), "database.db")
 
 # Connect to DB
