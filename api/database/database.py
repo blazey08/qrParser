@@ -1,8 +1,17 @@
-import sqlite3
+import sqlite3, os
+from pathlib import Path
+from sqlite3 import dbapi2
+from tkinter import N
+
+parent = os.getcwd()
+dbPath = os.path.join(parent, "database.db")
+
+# dbPath = os.path.join(os.path.dirname(os.getcwd()), "database.db")
 
 # Connect to DB
 def connect_to_db():
-    conn = sqlite3.connect('../database.db')
+    print(dbPath)
+    conn = sqlite3.connect(dbPath)
     return conn
 
 # Create table
@@ -26,8 +35,8 @@ def insert_user(user):
     try:
         conn = connect_to_db()
         cur = conn.cursor()
-        cur.execute("INSERT INTO profiles (username, age, occupation, phoneNumber) VALUES (?, ?,?,?)",
-                    (user['username'], user['age'], user['occupation'], user['phoneNumber']))
+        cur.execute("INSERT INTO profiles (username, age, occupation, phoneNumber) VALUES (?,?,?,?)",
+                    (user["username"], user["age"], user["occupation"], user["phoneNumber"]))
         conn.commit()
         inserted_user = get_user_by_id(cur.lastrowid)
 
@@ -49,29 +58,47 @@ def row_to_dict(row):
     user["phoneNumber"] = row["phoneNumber"]
     return user
 
-# Get user
+# Get user id
 def get_user_by_id(uid):
     try:
+        print(uid)
         conn = connect_to_db()
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         cur.execute("SELECT * FROM profiles WHERE id = ?", (uid,))
         row = cur.fetchone()
         user = row_to_dict(row)
-        
+
     except Exception as e:
         print(e)
         user = {}
     return user
 
+# Get user id given name
+def get_user(name):
+    try: 
+        print(name)
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM profiles WHERE username = ?", (name,))
+        row = cur.fetchone()
+        user = row_to_dict(row)
+
+    except Exception as e:
+        print(e)
+        user = {}
+
+    return user
+
 # Delete user
-def delete_user(uid):
+def delete_user(name):
     message = {}
-    print("hi")
 
     try:
         conn = connect_to_db()
-        conn.execute("DELETE FROM profiles where id = ?", (uid,))
+        cur = conn.cursor()
+        cur.execute("DELETE FROM profiles WHERE username = ?", (name,))
         conn.commit()
         message['status'] = "User deleted succesfully"
     except Exception as e:

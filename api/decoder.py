@@ -1,22 +1,21 @@
-import cv2, os
+import cv2, os, json
 
-filepath = os.path.join(os.path.abspath('.'), 'qr')
+filepath = os.path.join(os.path.abspath('.'), 'qr', 'nancy.png')
 
 # Function to process QR code into JSON data
 def processQR(filename):
     try:
-        print(filename)
-        image = cv2.imread(os.path.join(filepath, filename))
+        image = cv2.imread(filename)
         detector = cv2.QRCodeDetector()
+        data, vertices_array, b = detector.detectAndDecode(image)
 
-        data, vertices_array, binary_qrcode = detector.detectAndDecode(image)
-        # if there is a QR code
-        # print the data
         if vertices_array is not None:
-            print("QRCode data:")
-            print(data)
+            nData = data.replace("'",'"')
+            # print(type(json.loads(nData)))
+            return json.loads(nData)
         else:
-            print("There was some error")   
+            print("Error decoding QR code")   
 
     except Exception as e:
         print(e)
+
