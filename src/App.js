@@ -1,22 +1,25 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import Upload from './Pages/Upload';
+import Home from './Pages/Home';
 import './App.css';
+import { BrowserRouter, Link, Routes, Route } from 'react-router-dom';
 
 function App() {
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <title>QR Parsing Service</title>
+        <BrowserRouter>
+          <div>
+            <Link className="App-link" to="/">Home</Link>
+            <Link className="App-link" to="/upload">Upload</Link>
+          </div>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/upload" element={<Upload />} />
+          </Routes>
+        </BrowserRouter>
       </header>
     </div>
   );

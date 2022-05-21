@@ -1,0 +1,9 @@
+POST http://127.0.0.1:5000/users/add HTTP/1.1
+content-type: application/json
+
+{
+    "username":"Mary",
+    "age": 25,
+    "occupation":"Teacher",
+    "phoneNumber":90001111
+}

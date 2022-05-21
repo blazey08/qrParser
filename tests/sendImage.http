@@ -1,0 +1,21 @@
+POST http://127.0.0.1:5000/upload HTTP/1.1
+Content-Type: multipart/form-data; boundary=---WebKitFormBoundary7MA4YWxkTrZu0gW
+
+ -----WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="john.png"; 
+Content-Type: image/png
+
+<./images/john.png
+-----WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Sending Nancy Picture 
+
+POST http://127.0.0.1:5000/upload HTTP/1.1
+Content-Type: multipart/form-data; boundary=---WebKitFormBoundary7MA4YWxkTrZu0gW
+
+ -----WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="nancy.png"; 
+Content-Type: image/png
+
+<./images/nancy.png
+-----WebKitFormBoundary7MA4YWxkTrZu0gW--
