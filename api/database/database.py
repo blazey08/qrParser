@@ -62,7 +62,6 @@ def row_to_dict(row):
 # Get user id
 def get_user_by_id(uid):
     try:
-        print(uid)
         conn = connect_to_db()
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()

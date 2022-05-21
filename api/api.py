@@ -8,7 +8,7 @@ UPLOAD_FOLDER = os.path.join(os.path.abspath('.'), 'qr')
 
 @app.route('/')
 def main_page():
-    return {{"Hello": 500}}
+    return {"Hello": 500}
 
 @app.route('/upload', methods = ["POST"])
 def add_user():
