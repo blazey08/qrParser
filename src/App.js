@@ -1,5 +1,4 @@
 import Navbar from './components/navbar';
-import Main from './Pages/Main';
 import Search from './Pages/Search';
 import Upload from './Pages/Upload';
 import Delete from './Pages/Delete';
@@ -8,6 +7,8 @@ import './App.css';
 import Login from './Pages/Login';
 
 function App() {
+  
+
   return (
   <div className='App'>
        <Navbar />
