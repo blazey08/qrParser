@@ -1,4 +1,4 @@
-from database import connect_to_db, create_dbTable, insert_user
+from database import connect_to_db, create_dbTable, insert_user, add_account
 
 # Seeding data
 initData = [{
@@ -20,6 +20,13 @@ initData = [{
     "phoneNumber": 87235567
 }] 
 
+# Create tables
 create_dbTable()
+
+# Add user accounts
+add_account("admin", "admin")
+add_account("user", "user")
+
+# Populate db with data
 for i in initData:
     insert_user(i)

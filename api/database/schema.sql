@@ -8,3 +8,11 @@ CREATE TABLE profiles (
     occupation TEXT NOT NULL,
     phoneNumber
 );
+
+DROP TABLE IF EXISTS credentials;
+
+CREATE TABLE credentials (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL
+);

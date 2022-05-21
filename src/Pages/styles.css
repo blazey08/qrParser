@@ -5,6 +5,14 @@
   
     .Login form {
       margin: 0 auto;
-      max-width: 320px;
+      max-width: 30%;
     }
   }
+
+  .centered {
+    height: 100vh; /* Magic here */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

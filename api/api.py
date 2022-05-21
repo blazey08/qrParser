@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, redirect
 from decoder import processQR
-from database.database import insert_user, delete_user, get_user, get_user_by_id
+from database.database import insert_user, delete_user, get_user, check_creds
 
 app = Flask(__name__)
 UPLOAD_FOLDER = os.path.join(os.path.abspath('.'), 'qr')
@@ -11,15 +11,13 @@ def login_page():
     username = request.values.get("username")
     password = request.values.get("password")
 
-    if username == "admin"  or username == "user":
+    if check_creds(username, password):
         print("login success")
-        return {"status":200, "token":"test"}
+        return {"valid":True}
 
     else:
         print("login fail")
-        return {"status":404}
-
-    
+        return {"valid":False}
 
 @app.route('/upload', methods = ["POST"])
 def add_user():
@@ -33,7 +31,11 @@ def add_user():
 @app.route('/search/<user>', methods = ["GET"])
 def find_user(user):
     if request.method == "GET":
-        return get_user(user)
+        val = get_user(user)
+        if val == {}:
+            return {"Status":"Error"}
+        val["Status"] = "Ok"
+        return val
 
 @app.route('/delete/<user>', methods=["DELETE"])
 def del_user(user):

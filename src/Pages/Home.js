@@ -9,7 +9,6 @@ import { Link, Routes, Route, Navigate } from 'react-router-dom';
 
 export default function Home() {
 
-
     return (
         <div className="App">
             <header className="App-header">

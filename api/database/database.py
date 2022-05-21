@@ -1,7 +1,5 @@
 import sqlite3, os
-from pathlib import Path
 from sqlite3 import dbapi2
-from tkinter import N
 
 parent = os.getcwd()
 dbPath = os.path.join(parent, "database.db")
@@ -23,7 +21,7 @@ def create_dbTable():
         with open('schema.sql') as f:
             conn.executescript(f.read())
             conn.commit()
-        print("Create profiles tables successfully")
+        print("Create profiles and login tables successfully")
     except Exception as e:
         print(e)
         print("Table creation failed")
@@ -77,7 +75,6 @@ def get_user_by_id(uid):
 # Get user id given name
 def get_user(name):
     try: 
-        print(name)
         conn = connect_to_db()
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
@@ -107,3 +104,32 @@ def delete_user(name):
         message['status'] = "Cannot delete user"
 
     return message
+
+## Credentials check
+def check_creds(username, password):
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute("SELECT username FROM credentials")
+
+        if username in cur.fetchall():
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        print(e)
+
+def add_account(username, pw):
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute("INSERT INTO credentials (username, password) VALUES (?,?)",
+                    (username, pw, ))
+        conn.commit()
+
+    except Exception as e:
+        print("Failed: ", e)
+        conn.rollback()
+    finally:
+        conn.close()

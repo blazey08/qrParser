@@ -9,13 +9,25 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import LogoutIcon from '@mui/icons-material/Logout';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import { Link } from 'react-router-dom';
 
 const pages = ['Upload', 'Delete', 'Login'];
 
-const ResponsiveAppBar = () => {
+const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [auth, setAuth] = React.useState("")
+
+    React.useEffect(() =>{
+        var isAuth = sessionStorage.getItem("isAuth");
+        console.log(isAuth)
+        if(isAuth === null || isAuth === "false"){
+            setAuth("False")
+        }else{
+            setAuth("True")
+        }
+    },[])
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -25,6 +37,9 @@ const ResponsiveAppBar = () => {
         setAnchorElNav(null);
     };
 
+    function logout() {
+        sessionStorage.clear()
+    }
 
     return (
         <AppBar position="static">
@@ -81,7 +96,7 @@ const ResponsiveAppBar = () => {
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
-                                        <Link style={{textDecoration:'none', color:'black'}} to={`/${page}`}> {page} </Link>
+                                        <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${page}`}> {page} </Link>
                                     </Typography>
                                 </MenuItem>
                             ))}
@@ -113,14 +128,25 @@ const ResponsiveAppBar = () => {
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                <Link style={{textDecoration:'none', color:'white'}} to={`/${page}`}> {page} </Link>
+                                <Link style={{ textDecoration: 'none', color: 'white' }} to={`/${page}`}> {page} </Link>
 
                             </Button>
                         ))}
                     </Box>
+                    <Box sx={{ flexGrow: 0.25 }}>
+                        <Typography color="white">
+                            Admin: {auth}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ flexGrow: 0 }}>
+                        <IconButton onClick={logout} style={{ color: 'white' }} href="/" >
+                            <LogoutIcon />
+                        </IconButton>
+                    </Box>
+   
                 </Toolbar>
             </Container>
         </AppBar>
     );
 };
-export default ResponsiveAppBar;
+export default Navbar;

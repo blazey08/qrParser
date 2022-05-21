@@ -3,13 +3,13 @@ import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import "./styles.css"
 import axios from "axios";
-import PropTypes from 'prop-types'
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
-export default function Login({setToken}) {
+export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     function validateForm() {
         return username.length > 0 && password.length > 0
@@ -22,11 +22,12 @@ export default function Login({setToken}) {
         f.append('password', password);
 
         axios.post("/login", f).then((res) => {
-            setToken(res.data['token'])
-            return <Navigate to="/main" replace />;
+            console.log(res.data)
+            sessionStorage.setItem("isAuth", res.data["valid"])
+            navigate("/")
         }).catch(function(err){
             console.log(err.response.data)
-        })
+        })        
     }
 
     return (
@@ -55,8 +56,4 @@ export default function Login({setToken}) {
             </Form>
         </div>
     )
-}
-
-Login.protoTypes = {
-    setToken: PropTypes.func.isRequired
 }

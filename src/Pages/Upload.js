@@ -1,6 +1,6 @@
 import axios from "axios"
 import React, { useState } from "react";
-import { Button, Input, Typography } from "@mui/material";
+import { Alert, Button, Input, Typography, Box } from "@mui/material";
 
 export default function Upload() {
 
@@ -27,6 +27,7 @@ export default function Upload() {
         // Posting to backend
         axios.post('/upload', data, config).then((response) => {
             console.log(response.data);
+            document.getElementById("uploadAlert").style.display = "block";
         });
     }
 
@@ -35,9 +36,12 @@ export default function Upload() {
             <title>QR Parser</title>
             <Typography variant="h4" margin={5}>Upload QR Code</Typography>
             <form method="POST" onSubmit={handleSubmit} id="uploadform">
-                <Input id="imguploader" name="image" type="file" disableUnderline={true}  onChange={handleChange} />
-                <Button className="button" id="uploadbtn" type="submit">Upload</Button>
+                <Input id="imgUploader" name="image" type="file" disableUnderline={true} onChange={handleChange} />
+                <Button className="button" id="uploadBtn" type="submit">Upload</Button>
             </form>
+            <Box id="uploadAlert" sx={{width: '40%'}} display='none' marginLeft={25} marginTop={4}>            
+                <Alert  severity="success">Successfully uploaded new user!</Alert>
+            </Box>
         </div>
     )
 
