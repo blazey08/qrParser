@@ -13,21 +13,23 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import { Link } from 'react-router-dom';
 
-const pages = ['Upload', 'Delete', 'Login'];
+const pages = ['Search', 'Upload', 'Delete', 'Login'];
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [auth, setAuth] = React.useState("")
 
-    React.useEffect(() =>{
+    React.useEffect(() => {
+
         var isAuth = sessionStorage.getItem("isAuth");
-        console.log(isAuth)
-        if(isAuth === null || isAuth === "false"){
+
+        if (isAuth === null || isAuth === "false") {
             setAuth("False")
-        }else{
+        } else {
             setAuth("True")
         }
-    },[])
+
+    }, [auth])
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -143,7 +145,7 @@ const Navbar = () => {
                             <LogoutIcon />
                         </IconButton>
                     </Box>
-   
+
                 </Toolbar>
             </Container>
         </AppBar>

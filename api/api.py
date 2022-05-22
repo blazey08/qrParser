@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, redirect
 from decoder import processQR
-from database.database import insert_user, delete_user, get_user, check_creds
+from database.database import insert_user, delete_user, get_user, check_creds, connect_to_db
 
 app = Flask(__name__)
 UPLOAD_FOLDER = os.path.join(os.path.abspath('.'), 'qr')

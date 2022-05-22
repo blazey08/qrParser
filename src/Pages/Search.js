@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SearchIcon from '@mui/icons-material/Search';
 import WorkIcon from '@mui/icons-material/Work';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
@@ -10,6 +10,22 @@ export default function Search() {
 
     const [user, setUser] = useState('')
     const [data, setData] = useState('')
+    const [alertText, setAlert] = useState('')
+    const [severity, setSeverity] = useState('info')
+    const [authed, setAuth] = useState(false)
+
+    useEffect(() => {
+        const newAuth = sessionStorage.getItem("isAuth")
+        if (authed !== newAuth) {
+            setAuth(newAuth)
+            if (authed) {
+                setSeverity('success')
+                setAlert("You have successfully logged in!")
+                document.getElementById("alert").style.display = "flex"
+            }
+            ;
+        }
+    }, [authed])
 
     function handleChange(e) {
         setUser(e.target.value)
@@ -20,20 +36,26 @@ export default function Search() {
         const url = "/search/" + user
         axios.get(url).then((res) => {
             if (res.data["Status"] === "Error") {
-                document.getElementById("errAlert").style.display = "block";
+                setAlert("User does not seem to exist!")
+                setSeverity('error')
+                document.getElementById("alert").style.display = "flex";
                 document.getElementById("userInfo").style.display = "none";
             } else {
                 setData(res.data)
-                document.getElementById("errAlert").style.display = "none";
-                document.getElementById("userInfo").style.display = "block";
+                document.getElementById("alert").style.display = "none";
+                document.getElementById("userInfo").style.display = "flex";
             }
 
+        }).catch((err) => {
+            setAlert("Please input a name before searching!")
+            setSeverity('error')
+            document.getElementById("alert").style.display = "flex";
         })
     }
 
 
     return (
-        <Box mt={10}>
+        <Box mt={10} >
             <Typography variant="h4">Home Page</Typography>
             <Typography variant="subtitle1" marginBottom={5}>Anyone can search for a user</Typography>
             <Grid container
@@ -56,51 +78,53 @@ export default function Search() {
 
                 </Grid>
             </Grid>
-            <Box id="userInfo"
-                marginLeft={25}
-                marginTop={5}
-                width='40%'
-                display="none"
-                alignSelf="center"
-                sx={{ bgcolor: 'Background.paper', border: 1 }} >
-                <Typography marginTop={2}>Profile</Typography>
-                <List sx={{ width: '100%', bgcolor: 'Background.paper' }}>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
+            <Box id="userInfo" alignItems="center" justifyContent="center" display='none' sx={{ width: '100%' }}>
 
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary={data["username"]} secondary="Username" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <CalendarTodayIcon />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary={data["age"]} secondary="Age" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <WorkIcon />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary={data["occupation"]} secondary="Occupation" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <LocalPhoneIcon />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary={data["phoneNumber"]} secondary="Number" />
-                    </ListItem>
-                </List>
+                <Box
+                    marginTop={5}
+                    width='40%'
+
+                    sx={{ bgcolor: 'Background.paper', border: 1 }} >
+                    <Typography marginTop={2}>Profile</Typography>
+                    <List sx={{ width: '100%', bgcolor: 'Background.paper' }}>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary={data["username"]} secondary="Username" />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <CalendarTodayIcon />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary={data["age"]} secondary="Age" />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <WorkIcon />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary={data["occupation"]} secondary="Occupation" />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <LocalPhoneIcon />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary={data["phoneNumber"]} secondary="Number" />
+                        </ListItem>
+                    </List>
+                </Box>
             </Box>
-            <Box id="errAlert" sx={{ width: '35%' }} display='none' marginLeft={25} marginTop={4}>
-                <Alert severity="error"> User does not seem to exist!</Alert>
+
+            <Box id="alert" mt={2} alignItems="center" justifyContent="center" display='none' sx={{ width: '100%' }}>
+                <Alert sx={{ width: '30%' }} severity={severity}>{alertText}</Alert>
             </Box>
         </Box>
 

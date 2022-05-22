@@ -27,5 +27,5 @@ def create(data, name):
 
 # Test QRs
 # create(nancy, "nancy")
-create(daniel, "daniel")
-create(janet, "janet")
+# create(daniel, "daniel")
+# create(janet, "janet")

@@ -1,15 +1,12 @@
 import sqlite3, os
-from sqlite3 import dbapi2
 
-parent = os.getcwd()
-dbPath = os.path.join(parent, "database.db")
+dbPath = os.path.join(os.path.abspath("."), "database.db")
 
 # Path for testing of the database functions
 # dbPath = os.path.join(os.path.dirname(os.getcwd()), "database.db")
 
 # Connect to DB
 def connect_to_db():
-    print(dbPath)
     conn = sqlite3.connect(dbPath)
     return conn
 
@@ -18,7 +15,7 @@ def create_dbTable():
     conn = connect_to_db()
 
     try:
-        with open('schema.sql') as f:
+        with open(os.path.join(os.path.abspath('database'),'schema.sql')) as f:
             conn.executescript(f.read())
             conn.commit()
         print("Create profiles and login tables successfully")
@@ -98,10 +95,12 @@ def delete_user(name):
         cur.execute("DELETE FROM profiles WHERE username = ?", (name,))
         conn.commit()
         message['status'] = "User deleted succesfully"
+
     except Exception as e:
         print(e)
         conn.rollback()
-        message['status'] = "Cannot delete user"
+        message['status'] = "failure"
+        return message
 
     return message
 
@@ -110,9 +109,9 @@ def check_creds(username, password):
     try:
         conn = connect_to_db()
         cur = conn.cursor()
-        cur.execute("SELECT username FROM credentials")
-
-        if username in cur.fetchall():
+        cur.execute("SELECT username, password FROM credentials")
+        output = list(filter(lambda x: username in x, cur.fetchall()))
+        if output[0][1] == password:
             return True
         else:
             return False
@@ -133,3 +132,5 @@ def add_account(username, pw):
         conn.rollback()
     finally:
         conn.close()
+
+

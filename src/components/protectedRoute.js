@@ -2,10 +2,11 @@ import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
     const user = sessionStorage.getItem("isAuth")
-    console.log("this", user)
+
     if (user !== "true") {
+        sessionStorage.setItem("login", false)
         return (
-                <Navigate to="/login" replace />
+            <Navigate to="/login" replace />
         );
     }
     return children;

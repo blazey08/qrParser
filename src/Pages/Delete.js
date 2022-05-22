@@ -7,6 +7,8 @@ import "./styles.css"
 export default function Delete() {
 
     const [user, setUser] = useState('')
+    const [alertText, setAlert] = useState('')
+    const [severity, setSeverity] = useState('info')
 
     function handleChange(e) {
         setUser(e.target.value)
@@ -17,8 +19,20 @@ export default function Delete() {
         const url = "/delete/" + user
         axios.delete(url).then((res) => {
             console.log(res.data)
-            document.getElementById("deleteAlert").style.display = "block";
-        })
+            if (res.data['status'] === "failure") {
+                setAlert("Tried to delete nonexistent user!")
+                setSeverity("error")
+            } else {
+                setAlert("User has been successfully deleted")
+                setSeverity("success")
+            }
+            document.getElementById("deleteAlert").style.display = "flex";
+        }).catch((err) => {
+            setAlert("Tried to delete nonexistent user!")
+            setSeverity("error")
+            document.getElementById("deleteAlert").style.display = "flex";
+        }
+        )
     }
 
 
@@ -42,8 +56,8 @@ export default function Delete() {
                     <Button className="button" id="searchBtn" startIcon={<DeleteIcon />} onClick={getUser} />
                 </Grid>
             </Grid>
-            <Box id="deleteAlert" sx={{width: '35%'}} display='none' marginLeft={25} marginTop={4}>            
-                <Alert  severity="success">Successfully deleted user!</Alert>
+            <Box id="deleteAlert" mt={2} alignItems="center" justifyContent="center" display='none' sx={{ width: '100%' }}>
+                <Alert sx={{ width: '25%' }} severity={severity}>{alertText}</Alert>
             </Box>
         </Box>
 

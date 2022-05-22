@@ -13,6 +13,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Search />} />
+        <Route path="search" element={<Search />} />
         <Route path="login" element={<Login />} />
         <Route
           path="upload"
